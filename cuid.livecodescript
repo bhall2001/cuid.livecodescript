@@ -39,6 +39,17 @@ private function _fingerprint
 end _fingerprint
 
 
+/**
+generate a random block
+**/
+private function _randomBlock
+   local randomNum
+   
+   put random(sDISCRETE_VALUES) into randomNum
+   return format("%04s",baseConvert(randomNum, 10, 36))
+end _randomBlock
+
+
 command test._fingerprint
    local tFingerprint
    put _fingerprint() into tFingerprint

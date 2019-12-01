@@ -23,7 +23,26 @@ private function _fingerprint
    local tPaddedPID
    local tPaddedHostname
    
+   put processID() into tPID
+   put hostName() into tHostname
+   put format("%04s",baseConvert(tPid, 10, 36)) into tPaddedPID
+   
+   put 36 + length(tHostName) into tHostnameHash
+   
+   repeat for each char tChar in tHostName
+      add nativeCharToNum(tChar) to tHostnameHash
+   end repeat
+   
+   put format("%04s",baseConvert(tHostnameHash, 10, 36)) into tPaddedHostname
+   
+   return tPaddedPID & tPaddedHostname
 end _fingerprint
+
+
+command test._fingerprint
+   local tFingerprint
+   put _fingerprint() into tFingerprint
+end test._fingerprint
 
 
 

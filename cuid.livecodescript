@@ -3,12 +3,20 @@ constant BASE=36
 constant BLOCK_SIZE=4
 constant ALPHABET = "0123456789abcdefghijklmnopqrstuvwxyz"
 
-local sDISCRETE_VALUES
-local sFINGERPRINT
+local sDiscreteValues
+local sFingerprint
+local sCount
 
 
 on libraryStack
-   put BASE ^ BLOCK_SIZE into sDISCRETE_VALUES
+   # intialize counter
+   put 0 into sCount
+   
+   # intialize descrete values
+   put BASE ^ BLOCK_SIZE into sDiscreteValues
+   
+   # initialize fingerprint
+   put _fingerprint() into sFingerprint
 end libraryStack
 
 
@@ -43,11 +51,23 @@ end _fingerprint
 generate a random block
 **/
 private function _randomBlock
-   local randomNum
+   local tRandomNum
    
-   put random(sDISCRETE_VALUES) into randomNum
-   return format("%04s",baseConvert(randomNum, 10, 36))
+   put random(sDiscreteValues) into tRandomNum
+   return format("%04s",baseConvert(tRandomNum, 10, 36))
 end _randomBlock
+
+/**
+counter ensures same machine same time cuids don't collide
+**/
+private function _counter
+   add 1 to sCount
+   if sCount >= sDiscreteValues then
+      put 0 into sCount
+   end if
+   
+   return sCount
+end _counter
 
 
 command test._fingerprint
@@ -55,5 +75,11 @@ command test._fingerprint
    put _fingerprint() into tFingerprint
 end test._fingerprint
 
+
+command test._randomBlock
+   local tBlock
+   
+   put _randomBlock() into tBlock
+end test._randomBlock
 
 

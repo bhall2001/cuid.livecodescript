@@ -141,7 +141,7 @@ private function _base10To36 pNum
    if pNum is not an integer then throw "Error: pNum must be an integer in" && param(0)
    
    if pNum < (4294967295) then
-      return baseConvert(pNum, 10, 36)
+      return toLower(baseConvert(pNum, 10, 36))
    end if
    
    # we have an integer bigger than baseConvert can handle so use
